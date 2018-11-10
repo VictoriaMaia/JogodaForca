@@ -1,31 +1,30 @@
 from classCliente import Cliente
+import json
 
 C = Cliente()
 
 def continuarJogo():
     while True:
-        continuar = input("Deseja continuar jogando ? [s/n]")
-        if continuar == "s":
-            C.enviarRequisicao("s")
-            return True
-        if continuar == "n":
-            print("Ok. Obrigada por jogar")
-            C.enviarRequisicao("n")
-            return False
+        continuar = input("Deseja continuar jogando ? [s/n] ")
+        if continuar == "s" or continuar == "n":
+            continuajogo = json.dumps(continuar)
+            C.enviarRequisicao(continuajogo)
+            break
         else:
             print("Por favor me responda direito. Oxe!")
 
+    respostaContinuar = json.loads(C.recebeResposta())
+    return respostaContinuar
 
 
 
 if __name__ == "__main__":
-    print("Bem vindo ao jogo da Força mais cuti cutinho que você já jogou ;)")
+    print("Bem vindo ao jogo da Forca mais cuti cutinho que você já jogou ;)")
     while True:
         palavra = C.recebeResposta()
-        informacoes = palavra.split('!')
-        dica = informacoes[0]
-        tamanho = int(informacoes[1])
-        acertou = 0
+        informacoes = json.loads(palavra)
+        dica = informacoes["dica"]
+        tamanho = int(informacoes["tamanho"])
         palavraAcertar = []
         for i in range(tamanho):
             palavraAcertar += ['_ ']    
@@ -36,20 +35,30 @@ if __name__ == "__main__":
             if len(letraDigitada) == 0:
                 print("Desculpe, mas tem que digitar algo seu mané")
             else:
-                C.enviarRequisicao(letraDigitada[0])
-                resposta = C.recebeResposta()
-                if resposta == "n":
+                letra = json.dumps(letraDigitada[0])
+                C.enviarRequisicao(letra)
+                respostaRecebida = C.recebeResposta()
+                respostaRecebida = json.loads(respostaRecebida)
+                continua = respostaRecebida["continua"]
+                if continua == "n":
                     print("Errou!")
-                else:
-                    acertou += 1
-                    posicao = int(resposta)
+
+                elif continua == "end":
+                    posicao = respostaRecebida["posicao"]
+                    posicao = int(posicao)
                     palavraAcertar[posicao] = letraDigitada[0]
                     print(''.join(palavraAcertar))
-                    if acertou == tamanho:
-                        print("You win!")
-                        break
+                    print("You win!")
+                    break
+
+                else:
+                    posicao = respostaRecebida["posicao"]
+                    posicao = int(posicao)
+                    palavraAcertar[posicao] = letraDigitada[0]
+                    print(''.join(palavraAcertar))
         
         if not continuarJogo():
+            print("Ok. Obrigada por jogar")
             break
         
 
