@@ -36,3 +36,22 @@ Existe 4 classes no algoritmo:
     - mandar uma palavra aleatória para o cliente, 
     - receber uma letra do cliente ,
     - testar se a letra recebida pertence a palavra.
+    
+Para executar primeiro inicie o servidor
+ 
+    $ python mainGame.py 
+    
+Depois só executar o jogo em outro terminal
+
+    
+    $ python mainJogador.py
+    
+Irá aparecer a mensagem de boas-vindas ao jogo e a primeira palavra a ser adivinhada:
+  
+    
+    Bem vindo ao jogo da Forca mais cuti cutinho que você já jogou ;)
+    A palavra é um : Objeto
+    _ _ _ _ 
+    Digite uma letra: 
+    
+Agora só se divertir! =D
